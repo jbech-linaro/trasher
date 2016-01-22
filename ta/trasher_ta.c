@@ -111,20 +111,32 @@ void TA_CloseSessionEntryPoint(void *sess_ctx)
 
 static TEE_Result trash(uint32_t param_types, TEE_Param params[4])
 {
-	//uint32_t *buf = (uint32_t *)params[0].memref.buffer;
+	uint8_t loop = 1;
+	uint32_t *buf = (uint32_t *)params[0].memref.buffer;
 	uint32_t exp_param_types = TEE_PARAM_TYPES(TEE_PARAM_TYPE_MEMREF_INOUT,
 						   TEE_PARAM_TYPE_NONE,
 						   TEE_PARAM_TYPE_NONE,
 						   TEE_PARAM_TYPE_NONE);
 
-	(void)exp_param_types;
-	(void)params;
-
 	DMSG("has been called");
+	DMSG("Got buf value: 0x%08x from NW", *buf);
 	if (param_types != exp_param_types)
 		return TEE_ERROR_BAD_PARAMETERS;
 
-	//*buf = 0xbabebabe;
+	*buf = 0xbaddcafe;
+	DMSG("Stored new buf value: 0x%08x", *buf);
+	DMSG("Enter never ending loop");
+
+	while (loop) {
+		int i;
+		for (i = 0; i++; i=10000000) {}
+
+		if (*buf != 0xbaddcafe) {
+			DMSG("New value in memory: 0x%08x", *buf);
+			DMSG("Return to normal world\n");
+			loop = 0;
+		}
+	};
 
 	return TEE_SUCCESS;
 }
