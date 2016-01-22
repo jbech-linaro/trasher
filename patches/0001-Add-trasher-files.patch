@@ -1,0 +1,27 @@
+From 252cad88497d63c5cb934d58eff247cd5f780913 Mon Sep 17 00:00:00 2001
+From: Joakim Bech <joakim.bech@linaro.org>
+Date: Fri, 22 Jan 2016 13:41:17 +0100
+Subject: [PATCH] Add trasher files
+
+Signed-off-by: Joakim Bech <joakim.bech@linaro.org>
+---
+ qemu.mk | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/qemu.mk b/qemu.mk
+index 5bdc0c2..420c197 100644
+--- a/qemu.mk
++++ b/qemu.mk
+@@ -165,6 +165,9 @@ filelist-tee: xtest
+ 	@echo "file /lib/arm-linux-gnueabihf/libteec.so.1.0 $(OPTEE_CLIENT_EXPORT)/lib/libteec.so.1.0 755 0 0" >> $(GEN_ROOTFS_FILELIST)
+ 	@echo "slink /lib/arm-linux-gnueabihf/libteec.so.1 libteec.so.1.0 755 0 0" >> $(GEN_ROOTFS_FILELIST)
+ 	@echo "slink /lib/arm-linux-gnueabihf/libteec.so libteec.so.1 755 0 0" >> $(GEN_ROOTFS_FILELIST)
++	@echo "file /bin/trasher /home/jbech/devel/optee_projects/optee_qemu/trasher/trasher 755 0 0" >> $(GEN_ROOTFS_FILELIST)
++	@echo "file /bin/tr_log.sh /home/jbech/devel/optee_projects/optee_qemu/trasher/tr_log.sh 755 0 0" >> $(GEN_ROOTFS_FILELIST)
++	@echo "file /lib/optee_armtz/11111111-2222-3333-445566778899aabb.ta /home/jbech/devel/optee_projects/optee_qemu/trasher/ta/out/11111111-2222-3333-445566778899aabb.ta 755 0 0" >> $(GEN_ROOTFS_FILELIST)
+ 
+ update_rootfs: busybox optee-client optee-linuxdriver filelist-tee
+ 	cat $(GEN_ROOTFS_PATH)/filelist-final.txt $(GEN_ROOTFS_PATH)/filelist-tee.txt > $(GEN_ROOTFS_PATH)/filelist.tmp
+-- 
+1.9.1
+
