@@ -56,7 +56,6 @@ static void dump_hash(uint8_t *hash, size_t len)
  */
 TEE_Result TA_CreateEntryPoint(void)
 {
-	DMSG("has been called");
 	return TEE_SUCCESS;
 }
 
@@ -66,7 +65,6 @@ TEE_Result TA_CreateEntryPoint(void)
  */
 void TA_DestroyEntryPoint(void)
 {
-	DMSG("has been called");
 }
 
 /*
@@ -89,12 +87,6 @@ TEE_Result TA_OpenSessionEntryPoint(uint32_t param_types,
 	(void)&params;
 	(void)&sess_ctx;
 
-	/*
-	 * The DMSG() macro is non-standard, TEE Internal API doesn't
-	 * specify any means to logging from a TA.
-	 */
-	DMSG("has been called");
-
 	/* If return value != TEE_SUCCESS the session will not be created. */
 	return TEE_SUCCESS;
 }
@@ -106,7 +98,6 @@ TEE_Result TA_OpenSessionEntryPoint(uint32_t param_types,
 void TA_CloseSessionEntryPoint(void *sess_ctx)
 {
 	(void)&sess_ctx; /* Unused parameter */
-	DMSG("has been called");
 }
 
 static TEE_Result trash(uint32_t param_types, TEE_Param params[4])
@@ -118,22 +109,19 @@ static TEE_Result trash(uint32_t param_types, TEE_Param params[4])
 						   TEE_PARAM_TYPE_NONE,
 						   TEE_PARAM_TYPE_NONE);
 
-	DMSG("has been called");
-	DMSG("Got buf value: 0x%08x from NW", *buf);
+	DMSG("Got buf value: 0x%08X from NW", *buf);
 	if (param_types != exp_param_types)
 		return TEE_ERROR_BAD_PARAMETERS;
 
-	*buf = 0xbaddcafe;
-	DMSG("Stored new buf value: 0x%08x", *buf);
-	DMSG("Enter never ending loop");
+	*buf = SW_UPDATE_VALUE;
+	DMSG("Stored new buf value: 0x%08X, enter never ending loop", *buf);
 
 	while (loop) {
 		int i;
 		for (i = 0; i++; i=10000000) {}
 
-		if (*buf != 0xbaddcafe) {
-			DMSG("New value in memory: 0x%08x", *buf);
-			DMSG("Return to normal world\n");
+		if (*buf != SW_UPDATE_VALUE) {
+			DMSG("Found new value in memory: 0x%08X, returning to NW", *buf);
 			loop = 0;
 		}
 	};

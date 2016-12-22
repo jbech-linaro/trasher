@@ -27,6 +27,10 @@
 #ifndef TRASHER_TA_H
 #define TRASHER_TA_H
 
+#define NW_INITIAL_VALUE 0xDEADBABE
+#define SW_UPDATE_VALUE 0xBAADF00D
+#define FINAL_VALUE 0xCAFEBABE
+
 /* This UUID is generated with uuidgen
    the ITU-T UUID generator at http://www.itu.int/ITU-T/asn1/uuid.html */
 #define TRASHER_TA_UUID { 0x11111111, 0x2222, 0x3333, \
