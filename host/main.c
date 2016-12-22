@@ -14,7 +14,7 @@
 #include <tee_client_api.h>
 
 /* To the the UUID */
-#include <trasher_ta.h> 
+#include "../ta/include/trasher_ta.h"
 
 /*
  * Manually found out that this is almost always the addressed used in param[0]
